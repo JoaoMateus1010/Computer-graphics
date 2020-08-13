@@ -1,8 +1,8 @@
 #include <iostream>
 #include <gui.h>
 
-#define WIDTH 800
-#define HIGH 600
+#define WIDTH 1366
+#define HIGH 768
 
 void desenha();
 void teclado(unsigned char tecla, int x, int y);
