@@ -18,12 +18,12 @@ SOURCES += main.cpp \
     gui_glut/extra.cpp \
     gui_glut/gui.cpp \
     generic.cpp \
-    dog.cpp \
     house.cpp \
     mola.cpp \
     generic_3ds.cpp \
-    car.cpp \
-    skeleton.cpp
+    skeleton.cpp \
+    giraffe.cpp \
+    house_3ds.cpp
 
 HEADERS += \
     bib/Camera.h \
@@ -35,9 +35,9 @@ HEADERS += \
     gui_glut/extra.h \
     gui_glut/gui.h \
     generic.h \
-    dog.h \
     house.h \
     mola.h \
     generic_3ds.h \
-    car.h \
-    skeleton.h
+    skeleton.h \
+    giraffe.h \
+    house_3ds.h

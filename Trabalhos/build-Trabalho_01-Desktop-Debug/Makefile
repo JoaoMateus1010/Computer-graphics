@@ -60,12 +60,12 @@ SOURCES       = ../Trabalho_01/main.cpp \
 		../Trabalho_01/gui_glut/extra.cpp \
 		../Trabalho_01/gui_glut/gui.cpp \
 		../Trabalho_01/generic.cpp \
-		../Trabalho_01/dog.cpp \
 		../Trabalho_01/house.cpp \
 		../Trabalho_01/mola.cpp \
 		../Trabalho_01/generic_3ds.cpp \
-		../Trabalho_01/car.cpp \
-		../Trabalho_01/skeleton.cpp 
+		../Trabalho_01/skeleton.cpp \
+		../Trabalho_01/giraffe.cpp \
+		../Trabalho_01/house_3ds.cpp 
 OBJECTS       = main.o \
 		Camera.o \
 		CameraDistante.o \
@@ -76,12 +76,12 @@ OBJECTS       = main.o \
 		extra.o \
 		gui.o \
 		generic.o \
-		dog.o \
 		house.o \
 		mola.o \
 		generic_3ds.o \
-		car.o \
-		skeleton.o
+		skeleton.o \
+		giraffe.o \
+		house_3ds.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -159,12 +159,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		gui_glut/extra.h \
 		gui_glut/gui.h \
 		generic.h \
-		dog.h \
 		house.h \
 		mola.h \
 		generic_3ds.h \
-		car.h \
-		skeleton.h ../Trabalho_01/main.cpp \
+		skeleton.h \
+		giraffe.h \
+		house_3ds.h ../Trabalho_01/main.cpp \
 		../Trabalho_01/bib/Camera.cpp \
 		../Trabalho_01/bib/CameraDistante.cpp \
 		../Trabalho_01/bib/CameraJogo.cpp \
@@ -174,12 +174,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../Trabalho_01/gui_glut/extra.cpp \
 		../Trabalho_01/gui_glut/gui.cpp \
 		../Trabalho_01/generic.cpp \
-		../Trabalho_01/dog.cpp \
 		../Trabalho_01/house.cpp \
 		../Trabalho_01/mola.cpp \
 		../Trabalho_01/generic_3ds.cpp \
-		../Trabalho_01/car.cpp \
-		../Trabalho_01/skeleton.cpp
+		../Trabalho_01/skeleton.cpp \
+		../Trabalho_01/giraffe.cpp \
+		../Trabalho_01/house_3ds.cpp
 QMAKE_TARGET  = Trabalho_01
 DESTDIR       = 
 TARGET        = Trabalho_01
@@ -382,11 +382,11 @@ main.o: ../Trabalho_01/main.cpp ../Trabalho_01/gui_glut/gui.h \
 		../Trabalho_01/bib/Desenha.h \
 		../Trabalho_01/bib/model3ds.h \
 		../Trabalho_01/generic.h \
-		../Trabalho_01/dog.h \
+		../Trabalho_01/giraffe.h \
 		../Trabalho_01/house.h \
 		../Trabalho_01/mola.h \
 		../Trabalho_01/generic_3ds.h \
-		../Trabalho_01/car.h \
+		../Trabalho_01/house_3ds.h \
 		../Trabalho_01/skeleton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Trabalho_01/main.cpp
 
@@ -432,34 +432,90 @@ gui.o: ../Trabalho_01/gui_glut/gui.cpp ../Trabalho_01/gui_glut/gui.h \
 		../Trabalho_01/bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gui.o ../Trabalho_01/gui_glut/gui.cpp
 
-generic.o: ../Trabalho_01/generic.cpp ../Trabalho_01/generic.h
+generic.o: ../Trabalho_01/generic.cpp ../Trabalho_01/generic.h \
+		../Trabalho_01/gui_glut/gui.h \
+		../Trabalho_01/gui_glut/extra.h \
+		../Trabalho_01/bib/CameraDistante.h \
+		../Trabalho_01/bib/Camera.h \
+		../Trabalho_01/bib/Vetor3D.h \
+		../Trabalho_01/bib/CameraJogo.h \
+		../Trabalho_01/bib/Desenha.h \
+		../Trabalho_01/bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o generic.o ../Trabalho_01/generic.cpp
 
-dog.o: ../Trabalho_01/dog.cpp ../Trabalho_01/dog.h \
-		../Trabalho_01/generic.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dog.o ../Trabalho_01/dog.cpp
-
 house.o: ../Trabalho_01/house.cpp ../Trabalho_01/house.h \
-		../Trabalho_01/generic.h
+		../Trabalho_01/generic.h \
+		../Trabalho_01/gui_glut/gui.h \
+		../Trabalho_01/gui_glut/extra.h \
+		../Trabalho_01/bib/CameraDistante.h \
+		../Trabalho_01/bib/Camera.h \
+		../Trabalho_01/bib/Vetor3D.h \
+		../Trabalho_01/bib/CameraJogo.h \
+		../Trabalho_01/bib/Desenha.h \
+		../Trabalho_01/bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o house.o ../Trabalho_01/house.cpp
 
 mola.o: ../Trabalho_01/mola.cpp ../Trabalho_01/mola.h \
-		../Trabalho_01/generic.h
+		../Trabalho_01/generic.h \
+		../Trabalho_01/gui_glut/gui.h \
+		../Trabalho_01/gui_glut/extra.h \
+		../Trabalho_01/bib/CameraDistante.h \
+		../Trabalho_01/bib/Camera.h \
+		../Trabalho_01/bib/Vetor3D.h \
+		../Trabalho_01/bib/CameraJogo.h \
+		../Trabalho_01/bib/Desenha.h \
+		../Trabalho_01/bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mola.o ../Trabalho_01/mola.cpp
 
 generic_3ds.o: ../Trabalho_01/generic_3ds.cpp ../Trabalho_01/generic_3ds.h \
-		../Trabalho_01/generic.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o generic_3ds.o ../Trabalho_01/generic_3ds.cpp
-
-car.o: ../Trabalho_01/car.cpp ../Trabalho_01/car.h \
 		../Trabalho_01/generic.h \
-		../Trabalho_01/generic_3ds.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o car.o ../Trabalho_01/car.cpp
+		../Trabalho_01/gui_glut/gui.h \
+		../Trabalho_01/gui_glut/extra.h \
+		../Trabalho_01/bib/CameraDistante.h \
+		../Trabalho_01/bib/Camera.h \
+		../Trabalho_01/bib/Vetor3D.h \
+		../Trabalho_01/bib/CameraJogo.h \
+		../Trabalho_01/bib/Desenha.h \
+		../Trabalho_01/bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o generic_3ds.o ../Trabalho_01/generic_3ds.cpp
 
 skeleton.o: ../Trabalho_01/skeleton.cpp ../Trabalho_01/skeleton.h \
 		../Trabalho_01/generic.h \
+		../Trabalho_01/gui_glut/gui.h \
+		../Trabalho_01/gui_glut/extra.h \
+		../Trabalho_01/bib/CameraDistante.h \
+		../Trabalho_01/bib/Camera.h \
+		../Trabalho_01/bib/Vetor3D.h \
+		../Trabalho_01/bib/CameraJogo.h \
+		../Trabalho_01/bib/Desenha.h \
+		../Trabalho_01/bib/model3ds.h \
 		../Trabalho_01/generic_3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skeleton.o ../Trabalho_01/skeleton.cpp
+
+giraffe.o: ../Trabalho_01/giraffe.cpp ../Trabalho_01/giraffe.h \
+		../Trabalho_01/generic.h \
+		../Trabalho_01/gui_glut/gui.h \
+		../Trabalho_01/gui_glut/extra.h \
+		../Trabalho_01/bib/CameraDistante.h \
+		../Trabalho_01/bib/Camera.h \
+		../Trabalho_01/bib/Vetor3D.h \
+		../Trabalho_01/bib/CameraJogo.h \
+		../Trabalho_01/bib/Desenha.h \
+		../Trabalho_01/bib/model3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o giraffe.o ../Trabalho_01/giraffe.cpp
+
+house_3ds.o: ../Trabalho_01/house_3ds.cpp ../Trabalho_01/house_3ds.h \
+		../Trabalho_01/generic.h \
+		../Trabalho_01/gui_glut/gui.h \
+		../Trabalho_01/gui_glut/extra.h \
+		../Trabalho_01/bib/CameraDistante.h \
+		../Trabalho_01/bib/Camera.h \
+		../Trabalho_01/bib/Vetor3D.h \
+		../Trabalho_01/bib/CameraJogo.h \
+		../Trabalho_01/bib/Desenha.h \
+		../Trabalho_01/bib/model3ds.h \
+		../Trabalho_01/generic_3ds.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o house_3ds.o ../Trabalho_01/house_3ds.cpp
 
 ####### Install
 

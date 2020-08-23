@@ -1,6 +1,7 @@
 #ifndef GENERIC_H
 #define GENERIC_H
 #include <iostream>
+#include <gui.h>
 using namespace std;
 class Generic{
     private:
@@ -29,15 +30,15 @@ class Generic{
         void set_y_scale(float y_scale);
         void set_z_scale(float z_scale);
 
-        float set_x_translate();
-        float set_y_translate();
-        float set_z_translate();
-        float set_x_angle();
-        float set_y_angle();
-        float set_z_angle();
-        float set_x_scale();
-        float set_y_scale();
-        float set_z_scale();
+        float get_x_translate();
+        float get_y_translate();
+        float get_z_translate();
+        float get_x_angle();
+        float get_y_angle();
+        float get_z_angle();
+        float get_x_scale();
+        float get_y_scale();
+        float get_z_scale();
 };
 
 #endif // GENERIC_H

@@ -1,5 +1,4 @@
 #include "generic.h"
-
 Generic::Generic(float x_translate,float y_translate,float z_translate,float x_angle,float y_angle,float z_angle,float x_scale,float y_scale,float z_scale){
     this->x_translate = x_translate;
     this->y_translate = y_translate;
@@ -55,30 +54,31 @@ void Generic::set_y_scale(float y_scale){
 void Generic::set_z_scale(float z_scale){
     this->z_scale=z_scale;
 }
-float Generic::set_x_translate(){
+
+float Generic::get_x_translate(){
     return this->x_translate;
 }
-float Generic::set_y_translate(){
+float Generic::get_y_translate(){
     return this->y_translate;
 }
-float Generic::set_z_translate(){
+float Generic::get_z_translate(){
     return this->z_translate;
 }
-float Generic::set_x_angle(){
+float Generic::get_x_angle(){
     return this->x_angle;
 }
-float Generic::set_y_angle(){
+float Generic::get_y_angle(){
     return this->y_angle;
 }
-float Generic::set_z_angle(){
+float Generic::get_z_angle(){
     return this->z_angle;
 }
-float Generic::set_x_scale(){
+float Generic::get_x_scale(){
     return this->x_scale;
 }
-float Generic::set_y_scale(){
+float Generic::get_y_scale(){
     return this->y_scale;
 }
-float Generic::set_z_scale(){
+float Generic::get_z_scale(){
     return this->z_scale;
 }

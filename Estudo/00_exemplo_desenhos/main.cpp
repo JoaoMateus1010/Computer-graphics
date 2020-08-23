@@ -117,13 +117,6 @@ void show_function_sin(int x){
     for(double i=0;i<x;i+=0.1){
         glVertex3f(sin(i)/2,i/x,cos(i)/2);
     }        
-    glEnd();
-
-    glBegin(GL_LINE_STRIP);
-    glNormal3f(1,0,0);
-    for(double i=0;i<x;i+=0.1){
-        glVertex3f(sin(i),i/x,cos(i));
-    }
-    glEnd();
+    glEnd();    
 
 }
