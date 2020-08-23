@@ -89,7 +89,7 @@ void House::draw(){
             glVertex3f(0,altura,0);
             glVertex3f(largura,altura,0);
         glEnd();
-        GUI::drawOrigin(0.3);
+        //GUI::drawOrigin(0.3);
     glPopMatrix();
     //GUI::drawBox(0,0,0,1,1,1,true);        
 }

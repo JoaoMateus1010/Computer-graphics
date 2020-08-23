@@ -11,7 +11,7 @@ Skeleton::~Skeleton(){
 void Skeleton::draw(){
     //std::cout<<"Print pelo Skeletonro"<<endl;
     Model3DS m3ds = Model3DS("../Trabalho_01/3ds/skeleton.3DS");
-    GUI::drawOrigin(0.3);
+    //GUI::drawOrigin(0.3);
     correcao();    
     GUI::draw3ds(m3ds);    
 

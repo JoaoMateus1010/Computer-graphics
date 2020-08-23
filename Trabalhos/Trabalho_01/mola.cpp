@@ -15,7 +15,7 @@ void Mola::draw(){
             }
         glEnd();        
     glPopMatrix();
-    GUI::drawOrigin(0.3);
+    //GUI::drawOrigin(0.3);
 }
 float Mola::get_mola_constante(){
     return this->mola_constante;

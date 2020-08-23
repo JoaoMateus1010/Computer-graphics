@@ -82,7 +82,7 @@ void desenha() {
 }
 
 void teclado(unsigned char tecla, int x, int y) {
-    //GUI::keyInit(tecla,x,y);    
+    GUI::keyInit(tecla,x,y);    
     switch (tecla) {
     case 'l':
         glutGUI::trans_luz = !glutGUI::trans_luz;
