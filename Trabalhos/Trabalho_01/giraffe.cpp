@@ -23,6 +23,5 @@ void Giraffe::draw(){
         GUI::drawBox(0.75,2,0.15,1.35,2.3,0.55,false);
         GUI::drawBox(0.75,2,0.15,1.25,2.5,0.55,false);
     glPopMatrix();
-    GUI::drawOrigin(0.3);
-    std::cout << "Print pela Girafa"<<endl;
+    GUI::drawOrigin(0.3);    
 }

@@ -8,6 +8,7 @@ House::~House(){
 
 }
 void House::draw(){
+    //cout << "Print pela casa"<< endl;
     float largura = 2;
     float altura = 1;
     float centro = largura/2;
@@ -90,6 +91,5 @@ void House::draw(){
         glEnd();
         GUI::drawOrigin(0.3);
     glPopMatrix();
-    //GUI::drawBox(0,0,0,1,1,1,true);    
-    std::cout<<"Print pela House" << endl;
+    //GUI::drawBox(0,0,0,1,1,1,true);        
 }

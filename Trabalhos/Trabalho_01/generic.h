@@ -18,7 +18,7 @@ class Generic{
         Generic(float x_translate,float y_translate,float z_translate,float x_angle,float y_angle,float z_angle,float x_scale,float y_scale,float z_scale);
         ~Generic();
         Generic();
-        virtual void draw()=0;
+        virtual void draw();
 
         void set_x_translate(float x_translate);
         void set_y_translate(float y_translate);
