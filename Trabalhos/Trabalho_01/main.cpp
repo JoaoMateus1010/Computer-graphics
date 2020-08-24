@@ -15,8 +15,8 @@
 #include "house_3ds.h"
 #include "skeleton.h"
 
-#define WIDTH   (1920)
-#define HIGH    (1080)
+#define WIDTH   (800)
+#define HIGH    (600)
 
 #define HOUSE       (0)
 #define MOLA        (1)
@@ -24,11 +24,11 @@
 #define HOUSE_3DS   (3)
 #define SKELETON    (4)
 
-#define CONST_MOLA  (10)
+#define CONST_MOLA  (20)
 
 #define TRANSLATE_CONST (0.1)
 #define ANGLE_CONST     (2)
-#define SCALE_CONST     (0.5)
+#define SCALE_CONST     (0.05)
 
 #define TRUE    (true)
 #define FALSE   (false)
@@ -44,7 +44,6 @@
 using namespace std;
 // --------------------  System ------------
 
-//Generic* Generic_List_OBJ[SIZE_VET];
 std::vector<Generic*> Generic_List_OBJ;
 int it_Generic_List_OBJ;
 
@@ -62,10 +61,16 @@ void Previous_Generic_List_OBJ();
 void draw_list_OBJ();
 void update_values_list_OBJ();
 
+void cena_01();
+
 int EIXO_TRANSLATE_SELECTED = EIXO_X;
 int EIXO_ANGLE_SELECTED = EIXO_X;
 int EIXO_SCALE_SELECTED = EIXO_X;
 int last_pick = TRANSLATE;
+
+ifstream in;
+ofstream out;
+
 //---------- Cameras --------------
 float eyeX,eyeY,eyeZ,centerX,centerY,centerZ,upX,upY,upZ;
 void setup_camera_1();
@@ -77,9 +82,10 @@ void setup_camera_6();
 void setup_camera_7();
 void setup_camera_0();
 
-Model3DS modelo3ds = Model3DS("/home/joao/Documentos/Faculdade/Semestre9/Computacao_Grafica/dropbox alunos/exemplos_sala/00_projeto inicial com camera/GLUTdoZero20201_mouse/3ds/cartest.3DS");
+Model3DS modelo3ds = Model3DS("../Trabalho_01/3ds/Cottage_FREE.3DS");
+Generic* tem = new Generic();
 
-int main(){        
+int main(){            
     GUI gui =  GUI(WIDTH,HIGH,desenha,teclado,mouse);
     cout << "Programa em execução" << endl;
     return 0;
@@ -118,7 +124,7 @@ void mouse(int button, int state, int x, int y){
                 EIXO_TRANSLATE_SELECTED=EIXO_X;
             }
             last_pick = TRANSLATE;
-            cout<<"press ON left" <<endl;
+            //cout<<"press ON left" <<endl;
         }
     }
     if(button==2){
@@ -145,7 +151,7 @@ void mouse(int button, int state, int x, int y){
                 EIXO_SCALE_SELECTED=EIXO_X;
             }
             last_pick = SCALE;
-            cout<<"press ON b middle" <<endl;
+            //cout<<"press ON b middle" <<endl;
         }
     }
     if(button==3){
@@ -185,7 +191,7 @@ void mouse(int button, int state, int x, int y){
                 }
                 break;
             }
-            cout<<"scroll up ON" <<endl;
+            //cout<<"scroll up ON" <<endl;
         }
     }
     if(button==4){
@@ -225,7 +231,7 @@ void mouse(int button, int state, int x, int y){
                 }
                 break;
             }
-            cout<<"scroll down ON" <<endl;
+            //cout<<"scroll down ON" <<endl;
         }
     }
     //cout<<button<<endl;
@@ -344,6 +350,27 @@ void teclado(unsigned char tecla, int x, int y) {
     case '0':
         setup_camera_0();
         break;
+    case '8': //SALVAR
+        std::cout << "SALVAR"<<endl;
+        if(!Generic_List_OBJ.empty()){
+            out.open("Generic_List_OBJ",ios::app);
+            for(int i=0;i<Generic_List_OBJ.size();i++){
+                out<<*Generic_List_OBJ[i];
+                cout<<endl<<typeid(Generic_List_OBJ[i]).name()<<endl;
+            }
+            out.close();
+        }
+        break;
+    case '9'://LOAD
+
+        break;
+    case '>'://Carrega modelos
+        if(!Generic_List_OBJ.empty()) Generic_List_OBJ.clear();
+        cena_01();
+        break;
+    case '<'://limpa tudo
+        Generic_List_OBJ.clear();
+        break;
     }
     cout << "TAM:" << Generic_List_OBJ.size() << endl;
     cout << "IT:" << it_Generic_List_OBJ << endl;
@@ -363,10 +390,10 @@ Generic* Add_Generic_List_OBJ(int obj_type){
         break;
     case HOUSE_3DS:
         cout << "CASA 3DS DRAW" << endl;
-        add = new House_3DS("");
+        add = new House_3DS();
         break;
     case SKELETON:
-        add = new Skeleton("");
+        add = new Skeleton();
         break;
     }
     Generic_List_OBJ.push_back(add);
@@ -384,7 +411,7 @@ void Previous_Generic_List_OBJ(){
     it_Generic_List_OBJ = it_Generic_List_OBJ<=0?Generic_List_OBJ.size()-1:it_Generic_List_OBJ-1;
 }
 
-void draw_list_OBJ(){    
+void draw_list_OBJ(){
     for(int i=0;i<Generic_List_OBJ.size();i++){        
         glPushMatrix();        
         glTranslatef(Generic_List_OBJ[i]->get_x_translate(),Generic_List_OBJ[i]->get_y_translate(),Generic_List_OBJ[i]->get_z_translate());
@@ -415,7 +442,36 @@ void update_values_list_OBJ(){
     Generic_List_OBJ[it_Generic_List_OBJ]->set_y_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_y_scale()+glutGUI::dsy);
     Generic_List_OBJ[it_Generic_List_OBJ]->set_z_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_z_scale()+glutGUI::dsz);
 }
+void cena_01(){
+    Generic* house1 =  new House(-6.1,-1.49012e-09,2.5,0,90,0,1,1,1);
+    Generic* house2 =  new House(0,0,-6.6,0,0,0,1,1,1);
+    Generic* house3 =  new House(5.9,0,0,2,-88,2,1,1,1);
+    Generic* house4 =  new House(-3.7,0,-7.3,0,0,0,1,1,1);
+    Generic* house5 =  new House(3.1,0,-6.9,0,0,0,1,1,1);
+    Generic* house6 =  new House(-6.6,0,-7.4,0,0,0,1,1,1);
+    Generic* house7 =  new House(-6.7,0.1,-0.0999999,-2,90,0,1,1.3,1.05);
+    Generic* house8 =  new House(6,1.3411e-08,-3.4,-2,-88,-2,1.05,1.25,1.15);
 
+    Generic_List_OBJ.push_back(house1);
+    Generic_List_OBJ.push_back(house2);
+    Generic_List_OBJ.push_back(house3);
+    Generic_List_OBJ.push_back(house4);
+    Generic_List_OBJ.push_back(house5);
+    Generic_List_OBJ.push_back(house6);
+    Generic_List_OBJ.push_back(house7);
+    Generic_List_OBJ.push_back(house8);
+
+    Generic* giraffe1 = new Giraffe(-0.7,0.2,-5.5,0,-90,-2,1.05,1.3,-1.1);
+    Generic* giraffe2 = new Giraffe(-4.7,0,-3,0,0,24,1,1,1);
+
+    Generic_List_OBJ.push_back(giraffe1);
+    Generic_List_OBJ.push_back(giraffe2);
+
+    Generic* house_3ds1 = new House_3DS(2.1,0.2,4.1,0,0,0,1.75,2.1,1.5);
+
+    Generic_List_OBJ.push_back(house_3ds1);
+
+}
 void setup_camera_1(){
     glutGUI::cam->e.x = 15;
     glutGUI::cam->e.y = 15;

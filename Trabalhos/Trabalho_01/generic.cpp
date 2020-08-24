@@ -82,3 +82,32 @@ float Generic::get_y_scale(){
 float Generic::get_z_scale(){
     return this->z_scale;
 }
+string float_to_string(float number){
+    ostringstream ss;
+    ss<<number;
+    string s = ss.str();
+    return s;
+}
+istream& operator >> (istream& is,Generic& obj){
+    is>>obj.x_translate;
+    is>>obj.y_translate;
+    is>>obj.z_translate;
+    is>>obj.x_angle;
+    is>>obj.y_angle;
+    is>>obj.z_angle;
+    is>>obj.x_scale;
+    is>>obj.y_scale;
+    is>>obj.z_scale;
+    return is;
+}
+ostream& operator << (ostream& os, const Generic& obj){
+    os << obj.x_translate << " " <<  obj.y_translate << " " <<  obj.z_translate << " " <<  obj.x_angle << " " << obj.y_angle << " " <<  obj.z_angle << " " <<  obj.x_scale << " " <<  obj.y_scale << " " <<  obj.z_scale<<"\n";
+    return os;
+}
+void Generic::saveInFile(){
+
+}
+Generic* loadFromFile(){
+
+}
+

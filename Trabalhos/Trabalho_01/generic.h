@@ -2,19 +2,24 @@
 #define GENERIC_H
 #include <iostream>
 #include <gui.h>
+#include <fstream>
+#include <sstream>
+
 using namespace std;
 class Generic{
     private:
-        float x_translate;
-        float y_translate;
-        float z_translate;
-        float x_angle;
-        float y_angle;
-        float z_angle;
-        float x_scale;
-        float y_scale;
-        float z_scale;
+
     public:
+    float x_translate;
+    float y_translate;
+    float z_translate;
+    float x_angle;
+    float y_angle;
+    float z_angle;
+    float x_scale;
+    float y_scale;
+    float z_scale;
+
         Generic(float x_translate,float y_translate,float z_translate,float x_angle,float y_angle,float z_angle,float x_scale,float y_scale,float z_scale);
         ~Generic();
         Generic();
@@ -39,6 +44,12 @@ class Generic{
         float get_x_scale();
         float get_y_scale();
         float get_z_scale();
-};
 
+        void saveInFile();
+        Generic* loadFromFile();
+
+};
+istream& operator >> (istream& is,Generic& obj);
+ostream& operator << (ostream& os, const Generic& obj);
+string float_to_string(float number);
 #endif // GENERIC_H

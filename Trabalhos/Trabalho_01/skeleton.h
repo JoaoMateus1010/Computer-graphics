@@ -5,8 +5,8 @@
 
 class Skeleton:public Generic,public Generic_3ds{
 public:
-    Skeleton();
-    Skeleton(string path);
+    Skeleton();    
+    Skeleton(float dx,float dy,float dz,float ax,float ay,float az,float sx,float sy,float sz);
     ~Skeleton();
     virtual void draw() override;
     virtual void correcao() override;
