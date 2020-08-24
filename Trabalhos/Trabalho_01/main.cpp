@@ -1,6 +1,8 @@
 #include <iostream>
 #include <gui.h>
+#include <ctime>
 #include <vector>
+
 #include "extra.h"
 #include "gui.h"
 
@@ -13,8 +15,8 @@
 #include "house_3ds.h"
 #include "skeleton.h"
 
-#define WIDTH   (800)
-#define HIGH    (600)
+#define WIDTH   (1920)
+#define HIGH    (1080)
 
 #define HOUSE       (0)
 #define MOLA        (1)
@@ -25,11 +27,19 @@
 #define CONST_MOLA  (10)
 
 #define TRANSLATE_CONST (0.1)
-#define ANGLE_CONST     (1)
+#define ANGLE_CONST     (2)
 #define SCALE_CONST     (0.5)
 
 #define TRUE    (true)
 #define FALSE   (false)
+
+#define EIXO_X (0)
+#define EIXO_Y (1)
+#define EIXO_Z (2)
+
+#define TRANSLATE   (0)
+#define ANGLE       (1)
+#define SCALE      (2)
 
 using namespace std;
 // --------------------  System ------------
@@ -42,6 +52,7 @@ bool draw_local_xyz = FALSE;
 
 void desenha();
 void teclado(unsigned char tecla, int x, int y);
+void mouse(int button, int state, int x, int y);
 
 Generic* Add_Generic_List_OBJ(int obj_type);
 void Remove_Generic_List_OBJ();
@@ -51,7 +62,10 @@ void Previous_Generic_List_OBJ();
 void draw_list_OBJ();
 void update_values_list_OBJ();
 
-
+int EIXO_TRANSLATE_SELECTED = EIXO_X;
+int EIXO_ANGLE_SELECTED = EIXO_X;
+int EIXO_SCALE_SELECTED = EIXO_X;
+int last_pick = TRANSLATE;
 //---------- Cameras --------------
 float eyeX,eyeY,eyeZ,centerX,centerY,centerZ,upX,upY,upZ;
 void setup_camera_1();
@@ -66,9 +80,8 @@ void setup_camera_0();
 Model3DS modelo3ds = Model3DS("/home/joao/Documentos/Faculdade/Semestre9/Computacao_Grafica/dropbox alunos/exemplos_sala/00_projeto inicial com camera/GLUTdoZero20201_mouse/3ds/cartest.3DS");
 
 int main(){        
-
+    GUI gui =  GUI(WIDTH,HIGH,desenha,teclado,mouse);
     cout << "Programa em execução" << endl;
-    GUI gui = GUI(WIDTH,HIGH,desenha,teclado);
     return 0;
 }
 
@@ -90,14 +103,140 @@ void desenha() {
     glPopMatrix();
     GUI::displayEnd();
 }
-
-void teclado(unsigned char tecla, int x, int y) {    
-   // GUI::keyInit(tecla,x,y);
+void mouse(int button, int state, int x, int y){
+    GUI::mouseButtonInit(button,state,x,y);
+    glutGUI::mouseMove(x,y);
+    //cout << "("<<glutGUI::last_x/(WIDTH/5)<<","<<glutGUI::last_y/(HIGH/5)<<")" << endl;
+    bool flag_time_double_click = false;
+    if(button==0){
+        if(state==0){
+            if(EIXO_TRANSLATE_SELECTED==EIXO_X){
+                EIXO_TRANSLATE_SELECTED=EIXO_Y;
+            }else if(EIXO_TRANSLATE_SELECTED==EIXO_Y){
+                EIXO_TRANSLATE_SELECTED=EIXO_Z;
+            }else{
+                EIXO_TRANSLATE_SELECTED=EIXO_X;
+            }
+            last_pick = TRANSLATE;
+            cout<<"press ON left" <<endl;
+        }
+    }
+    if(button==2){
+        if(state==0){
+            if(EIXO_ANGLE_SELECTED==EIXO_X){
+                EIXO_ANGLE_SELECTED=EIXO_Y;
+            }else if(EIXO_ANGLE_SELECTED==EIXO_Y){
+                EIXO_ANGLE_SELECTED=EIXO_Z;
+            }else{
+                EIXO_ANGLE_SELECTED=EIXO_X;
+            }
+            last_pick = ANGLE;
+            cout << EIXO_ANGLE_SELECTED <<endl;
+            cout<<"press ON b right" <<endl;
+        }
+    }
+    if(button==1){
+        if(state==0){
+            if(EIXO_SCALE_SELECTED==EIXO_X){
+                EIXO_SCALE_SELECTED=EIXO_Y;
+            }else if(EIXO_SCALE_SELECTED==EIXO_Y){
+                EIXO_SCALE_SELECTED=EIXO_Z;
+            }else{
+                EIXO_SCALE_SELECTED=EIXO_X;
+            }
+            last_pick = SCALE;
+            cout<<"press ON b middle" <<endl;
+        }
+    }
+    if(button==3){
+        if(state==0){
+            switch (last_pick) {
+            case TRANSLATE:
+                if(EIXO_TRANSLATE_SELECTED==EIXO_X){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_x_translate(Generic_List_OBJ[it_Generic_List_OBJ]->get_x_translate()+TRANSLATE_CONST);
+                }
+                if(EIXO_TRANSLATE_SELECTED==EIXO_Y){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_y_translate(Generic_List_OBJ[it_Generic_List_OBJ]->get_y_translate()+TRANSLATE_CONST);
+                }
+                if(EIXO_TRANSLATE_SELECTED==EIXO_Z){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_z_translate(Generic_List_OBJ[it_Generic_List_OBJ]->get_z_translate()+TRANSLATE_CONST);
+                }
+                break;
+            case ANGLE:
+                if(EIXO_ANGLE_SELECTED==EIXO_X){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_x_angle(Generic_List_OBJ[it_Generic_List_OBJ]->get_x_angle()+ANGLE_CONST);
+                }
+                if(EIXO_ANGLE_SELECTED==EIXO_Y){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_y_angle(Generic_List_OBJ[it_Generic_List_OBJ]->get_y_angle()+ANGLE_CONST);
+                }
+                if(EIXO_ANGLE_SELECTED==EIXO_Z){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_z_angle(Generic_List_OBJ[it_Generic_List_OBJ]->get_z_angle()+ANGLE_CONST);
+                }
+                break;
+            case SCALE:
+                if(EIXO_SCALE_SELECTED==EIXO_X){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_x_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_x_scale()+SCALE_CONST);
+                }
+                if(EIXO_SCALE_SELECTED==EIXO_Y){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_y_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_y_scale()+SCALE_CONST);
+                }
+                if(EIXO_SCALE_SELECTED==EIXO_Z){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_z_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_z_scale()+SCALE_CONST);
+                }
+                break;
+            }
+            cout<<"scroll up ON" <<endl;
+        }
+    }
+    if(button==4){
+        if(state==0){
+            switch (last_pick) {
+            case TRANSLATE:
+                if(EIXO_TRANSLATE_SELECTED==EIXO_X){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_x_translate(Generic_List_OBJ[it_Generic_List_OBJ]->get_x_translate()-TRANSLATE_CONST);
+                }
+                if(EIXO_TRANSLATE_SELECTED==EIXO_Y){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_y_translate(Generic_List_OBJ[it_Generic_List_OBJ]->get_y_translate()-TRANSLATE_CONST);
+                }
+                if(EIXO_TRANSLATE_SELECTED==EIXO_Z){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_z_translate(Generic_List_OBJ[it_Generic_List_OBJ]->get_z_translate()-TRANSLATE_CONST);
+                }
+                break;
+            case ANGLE:
+                if(EIXO_ANGLE_SELECTED==EIXO_X){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_x_angle(Generic_List_OBJ[it_Generic_List_OBJ]->get_x_angle()-ANGLE_CONST);
+                }
+                if(EIXO_ANGLE_SELECTED==EIXO_Y){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_y_angle(Generic_List_OBJ[it_Generic_List_OBJ]->get_y_angle()-ANGLE_CONST);
+                }
+                if(EIXO_ANGLE_SELECTED==EIXO_Z){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_z_angle(Generic_List_OBJ[it_Generic_List_OBJ]->get_z_angle()-ANGLE_CONST);
+                }
+                break;
+            case SCALE:
+                if(EIXO_SCALE_SELECTED==EIXO_X){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_x_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_x_scale()-SCALE_CONST);
+                }
+                if(EIXO_SCALE_SELECTED==EIXO_Y){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_y_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_y_scale()-SCALE_CONST);
+                }
+                if(EIXO_SCALE_SELECTED==EIXO_Z){
+                    if (!Generic_List_OBJ.empty()) Generic_List_OBJ[it_Generic_List_OBJ]->set_z_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_z_scale()-SCALE_CONST);
+                }
+                break;
+            }
+            cout<<"scroll down ON" <<endl;
+        }
+    }
+    //cout<<button<<endl;
+    //cout<<state<<endl;
+}
+void teclado(unsigned char tecla, int x, int y) {           
     switch (tecla) {
     case 'l':
         glutGUI::trans_luz = !glutGUI::trans_luz;
         break;    
-    case 'H'://AddCasa
+    case 'H':
         Add_Generic_List_OBJ(HOUSE);
         break;
     case 'M':
