@@ -1,6 +1,8 @@
 #include <iostream>
 #include <gui.h>
 #include <vector>
+#include "extra.h"
+#include "gui.h"
 
 #include "generic.h"
 #include "giraffe.h"
@@ -30,7 +32,7 @@
 #define FALSE   (false)
 
 using namespace std;
-// --------------------  Systema ------------
+// --------------------  System ------------
 
 //Generic* Generic_List_OBJ[SIZE_VET];
 std::vector<Generic*> Generic_List_OBJ;
@@ -50,12 +52,20 @@ void draw_list_OBJ();
 void update_values_list_OBJ();
 
 
-//-----------------------------------------
-Generic* g = new House();
+//---------- Cameras --------------
+float eyeX,eyeY,eyeZ,centerX,centerY,centerZ,upX,upY,upZ;
+void setup_camera_1();
+void setup_camera_2();
+void setup_camera_3();
+void setup_camera_4();
+void setup_camera_5();
+void setup_camera_6();
+void setup_camera_7();
+void setup_camera_0();
 
 Model3DS modelo3ds = Model3DS("/home/joao/Documentos/Faculdade/Semestre9/Computacao_Grafica/dropbox alunos/exemplos_sala/00_projeto inicial com camera/GLUTdoZero20201_mouse/3ds/cartest.3DS");
 
-int main(){    
+int main(){        
 
     cout << "Programa em execução" << endl;
     GUI gui = GUI(WIDTH,HIGH,desenha,teclado);
@@ -81,8 +91,8 @@ void desenha() {
     GUI::displayEnd();
 }
 
-void teclado(unsigned char tecla, int x, int y) {
-    //GUI::keyInit(tecla,x,y);    
+void teclado(unsigned char tecla, int x, int y) {    
+   // GUI::keyInit(tecla,x,y);
     switch (tecla) {
     case 'l':
         glutGUI::trans_luz = !glutGUI::trans_luz;
@@ -171,6 +181,30 @@ void teclado(unsigned char tecla, int x, int y) {
     case 'z':
         Remove_Generic_List_OBJ();
         break;
+    case '1':
+        setup_camera_1();
+        break;
+    case '2':
+        setup_camera_2();
+        break;
+    case '3':
+        setup_camera_3();
+        break;
+    case '4':
+        setup_camera_4();
+        break;
+    case '5':
+        setup_camera_5();
+        break;
+    case '6':
+        setup_camera_6();
+        break;
+    case '7':
+        setup_camera_7();
+        break;
+    case '0':
+        setup_camera_0();
+        break;
     }
     cout << "TAM:" << Generic_List_OBJ.size() << endl;
     cout << "IT:" << it_Generic_List_OBJ << endl;
@@ -241,4 +275,93 @@ void update_values_list_OBJ(){
     Generic_List_OBJ[it_Generic_List_OBJ]->set_x_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_x_scale()+glutGUI::dsx);
     Generic_List_OBJ[it_Generic_List_OBJ]->set_y_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_y_scale()+glutGUI::dsy);
     Generic_List_OBJ[it_Generic_List_OBJ]->set_z_scale(Generic_List_OBJ[it_Generic_List_OBJ]->get_z_scale()+glutGUI::dsz);
+}
+
+void setup_camera_1(){
+    glutGUI::cam->e.x = 15;
+    glutGUI::cam->e.y = 15;
+    glutGUI::cam->e.z = 15;
+    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.y = 0;
+    glutGUI::cam->c.z = 0;
+    glutGUI::cam->u.x = 0;
+    glutGUI::cam->u.y = 1;
+    glutGUI::cam->u.z = 0;
+}
+void setup_camera_2(){
+    glutGUI::cam->e.x = 1;
+    glutGUI::cam->e.y = 15;
+    glutGUI::cam->e.z = 0;
+    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.y = 0;
+    glutGUI::cam->c.z = 0;
+    glutGUI::cam->u.x = 0;
+    glutGUI::cam->u.y = 1;
+    glutGUI::cam->u.z = 0;
+}
+void setup_camera_3(){
+    glutGUI::cam->e.x = 10;
+    glutGUI::cam->e.y = 1;
+    glutGUI::cam->e.z = 0;
+    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.y = 0;
+    glutGUI::cam->c.z = 0;
+    glutGUI::cam->u.x = 0;
+    glutGUI::cam->u.y = 1;
+    glutGUI::cam->u.z = 0;
+}
+void setup_camera_4(){
+    glutGUI::cam->e.x = 0;
+    glutGUI::cam->e.y = 1;
+    glutGUI::cam->e.z = 10;
+    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.y = 0;
+    glutGUI::cam->c.z = 0;
+    glutGUI::cam->u.x = 0;
+    glutGUI::cam->u.y = 1;
+    glutGUI::cam->u.z = 0;
+}
+void setup_camera_5(){
+    glutGUI::cam->e.x = -10;
+    glutGUI::cam->e.y = 1;
+    glutGUI::cam->e.z = -10;
+    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.y = 0;
+    glutGUI::cam->c.z = 0;
+    glutGUI::cam->u.x = 0;
+    glutGUI::cam->u.y = 1;
+    glutGUI::cam->u.z = 0;
+}
+void setup_camera_6(){
+    glutGUI::cam->e.x = 30;
+    glutGUI::cam->e.y = 1;
+    glutGUI::cam->e.z = 0;
+    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.y = 0;
+    glutGUI::cam->c.z = 0;
+    glutGUI::cam->u.x = 0;
+    glutGUI::cam->u.y = 1;
+    glutGUI::cam->u.z = 0;
+}
+void setup_camera_7(){
+    glutGUI::cam->e.x = 1;
+    glutGUI::cam->e.y = -10;
+    glutGUI::cam->e.z = 0;
+    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.y = 0;
+    glutGUI::cam->c.z = 0;
+    glutGUI::cam->u.x = 0;
+    glutGUI::cam->u.y = 1;
+    glutGUI::cam->u.z = 0;
+}
+void setup_camera_0(){
+    glutGUI::cam->e.x = 0;
+    glutGUI::cam->e.y = 1;
+    glutGUI::cam->e.z = 10;
+    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.y = 1;
+    glutGUI::cam->c.z = 0;
+    glutGUI::cam->u.x = 0;
+    glutGUI::cam->u.y = 1;
+    glutGUI::cam->u.z = 0;
 }

@@ -123,7 +123,6 @@ void GUI::displayInit()
     glViewport(0, 0, glutGUI::width, glutGUI::height);
         glLoadIdentity();
         gluLookAt(glutGUI::cam->e.x,glutGUI::cam->e.y,glutGUI::cam->e.z, glutGUI::cam->c.x,glutGUI::cam->c.y,glutGUI::cam->c.z, glutGUI::cam->u.x,glutGUI::cam->u.y,glutGUI::cam->u.z);
-
     GUI::setLight(7,0,4,0,true,false,true);
 }
 
