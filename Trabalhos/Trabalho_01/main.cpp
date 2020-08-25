@@ -485,7 +485,7 @@ void setup_camera_1(){
 }
 void setup_camera_2(){
     glutGUI::cam->e.x = 1;
-    glutGUI::cam->e.y = 15;
+    glutGUI::cam->e.y = 25;
     glutGUI::cam->e.z = 0;
     glutGUI::cam->c.x = 0;
     glutGUI::cam->c.y = 0;
@@ -495,7 +495,7 @@ void setup_camera_2(){
     glutGUI::cam->u.z = 0;
 }
 void setup_camera_3(){
-    glutGUI::cam->e.x = 10;
+    glutGUI::cam->e.x = 25;
     glutGUI::cam->e.y = 1;
     glutGUI::cam->e.z = 0;
     glutGUI::cam->c.x = 0;
@@ -508,7 +508,7 @@ void setup_camera_3(){
 void setup_camera_4(){
     glutGUI::cam->e.x = 0;
     glutGUI::cam->e.y = 1;
-    glutGUI::cam->e.z = 10;
+    glutGUI::cam->e.z = 25;
     glutGUI::cam->c.x = 0;
     glutGUI::cam->c.y = 0;
     glutGUI::cam->c.z = 0;
@@ -517,9 +517,9 @@ void setup_camera_4(){
     glutGUI::cam->u.z = 0;
 }
 void setup_camera_5(){
-    glutGUI::cam->e.x = -10;
+    glutGUI::cam->e.x = -25;
     glutGUI::cam->e.y = 1;
-    glutGUI::cam->e.z = -10;
+    glutGUI::cam->e.z = -25;
     glutGUI::cam->c.x = 0;
     glutGUI::cam->c.y = 0;
     glutGUI::cam->c.z = 0;
@@ -540,7 +540,7 @@ void setup_camera_6(){
 }
 void setup_camera_7(){
     glutGUI::cam->e.x = 1;
-    glutGUI::cam->e.y = -10;
+    glutGUI::cam->e.y = -20;
     glutGUI::cam->e.z = 0;
     glutGUI::cam->c.x = 0;
     glutGUI::cam->c.y = 0;
