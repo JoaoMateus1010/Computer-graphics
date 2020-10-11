@@ -4,6 +4,10 @@ int glutGUI::width = 400;
 int glutGUI::height = 300;
 
 bool glutGUI::perspective = true;
+bool glutGUI::ortho = false;
+bool glutGUI::cavalier = false;
+bool glutGUI::cabinet = false;
+bool glutGUI::frustum = false;
 
 bool glutGUI::picking = false;
 

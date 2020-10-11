@@ -113,8 +113,36 @@ void GUI::displayInit()
 
     if (glutGUI::perspective)
         gluPerspective(30.,ar,0.1,1000.);
-    else
-        glOrtho(-orthof*w,orthof*w,-orthof*h,orthof*h,0.0,100.0);
+    else if(glutGUI::ortho)
+        glOrtho(-orthof*w,orthof*w,-orthof*h,orthof*h,0.0,600.0);
+    else if(glutGUI::cavalier){
+        float alfa = 45;
+        alfa = alfa*(PI/180);
+        float phi = -45;
+        phi = phi*(PI/180);
+        float transform[16] = {
+            1.0,    0.0,    1.0f/tan(alfa),   0.0,
+            0.0,    1.0,    1.0f/tan(phi),    0.0,
+            0.0,    0.0,    1.0,             0.0,
+            0.0,    0.0,    0.0,             1.0
+                             };
+        glMultTransposeMatrixf( transform );
+        glOrtho(-orthof*w,orthof*w,-orthof*h,orthof*h,0.0,600.0);
+    }else if(glutGUI::cabinet){
+        float alfa = 30;
+        alfa = alfa*(PI/180);
+        float phi = 60;
+        phi = phi*(PI/180);
+        float transform[16] = {
+            1.0,    0.0,    1.0f/tan(alfa),   0.0,
+            0.0,    1.0,    1.0f/tan(phi),    0.0,
+            0.0,    0.0,    1.0,             0.0,
+            0.0,    0.0,    0.0,             1.0
+                             };
+        glMultTransposeMatrixf( transform );
+        glOrtho(-orthof*w,orthof*w,-orthof*h,orthof*h,0.0,600.0);
+    }else if(glutGUI::frustum)
+        gluPerspective(60.,ar,0.1,600.);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

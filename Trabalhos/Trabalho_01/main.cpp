@@ -15,8 +15,8 @@
 #include "house_3ds.h"
 #include "skeleton.h"
 
-#define WIDTH   (800)
-#define HIGH    (600)
+#define WIDTH   (1366)
+#define HIGH    (768)
 
 #define HOUSE       (0)
 #define MOLA        (1)
@@ -41,10 +41,12 @@
 #define ANGLE       (1)
 #define SCALE      (2)
 
+#define SIZE_FLOOR (25)
+
 using namespace std;
 // --------------------  System ------------
 
-std::vector<Generic*> Generic_List_OBJ;
+vector<Generic*> Generic_List_OBJ;
 int it_Generic_List_OBJ;
 
 bool draw_local_xyz = FALSE;
@@ -82,12 +84,22 @@ void setup_camera_6();
 void setup_camera_7();
 void setup_camera_0();
 
+//-------- Shadow -------------
+
+bool pontual = true;
+bool drawShadow = false;
+float k = 0.0;
+
+bool drawWallFlag = false;
+void shadow();
+void drawWall();
+
 Model3DS modelo3ds = Model3DS("../Trabalho_01/3ds/Cottage_FREE.3DS");
 Generic* tem = new Generic();
 
 int main(){            
-    GUI gui =  GUI(WIDTH,HIGH,desenha,teclado,mouse);
-    cout << "Programa em execução" << endl;
+    GUI gui =  GUI(WIDTH,HIGH,desenha,teclado);
+    //cout << "Programa em execução" << endl;
     return 0;
 }
 
@@ -95,14 +107,20 @@ void desenha() {
     GUI::displayInit();
     GUI::setLight(0,0,2,0, true, false);    
     glPushMatrix();
+        glTranslated(0.0,k-0.001,0.0);
         GUI::drawOrigin(0.5);
-        GUI::setColor(1,0,0);
-        GUI::drawFloor();
+        GUI::setColor(1,0,0);        
+        GUI::drawFloor(SIZE_FLOOR,SIZE_FLOOR);
     glPopMatrix();
-    if(!Generic_List_OBJ.empty()){        
-        update_values_list_OBJ();
+
+    if(!Generic_List_OBJ.empty()){
         draw_list_OBJ();
-    }    
+        update_values_list_OBJ();
+    }
+
+    if(drawShadow) shadow();
+    if(drawWallFlag) drawWall();
+
     glPushMatrix();
         glScalef(0,0,0);
         GUI::draw3ds(modelo3ds);
@@ -137,7 +155,7 @@ void mouse(int button, int state, int x, int y){
                 EIXO_ANGLE_SELECTED=EIXO_X;
             }
             last_pick = ANGLE;
-            cout << EIXO_ANGLE_SELECTED <<endl;
+            std::cout << EIXO_ANGLE_SELECTED <<endl;
             cout<<"press ON b right" <<endl;
         }
     }
@@ -351,18 +369,50 @@ void teclado(unsigned char tecla, int x, int y) {
         setup_camera_0();
         break;
     case '8': //SALVAR
-        std::cout << "SALVAR"<<endl;
+        //std::cout << "SALVAR"<<endl;
         if(!Generic_List_OBJ.empty()){
             out.open("Generic_List_OBJ",ios::app);
             for(int i=0;i<Generic_List_OBJ.size();i++){
                 out<<*Generic_List_OBJ[i];
-                cout<<endl<<typeid(Generic_List_OBJ[i]).name()<<endl;
+                //cout<<endl<<typeid(Generic_List_OBJ[i]).name()<<endl;
             }
             out.close();
         }
         break;
-    case '9'://LOAD
-
+    case '!':
+        glutGUI::perspective = false;
+        glutGUI::cabinet = false;
+        glutGUI::ortho = true;
+        glutGUI::cavalier = false;
+        glutGUI::frustum = true;
+        break;
+    case '@':
+        glutGUI::perspective = false;
+        glutGUI::cabinet = true;
+        glutGUI::ortho = false;
+        glutGUI::cavalier = false;
+        glutGUI::frustum = false;
+      break;
+    case '#':
+        glutGUI::perspective = false;
+        glutGUI::cabinet = false;
+        glutGUI::ortho = false;
+        glutGUI::cavalier = true;
+        glutGUI::frustum = false;
+      break;
+    case '$':
+        glutGUI::perspective = true;
+        glutGUI::cabinet = false;
+        glutGUI::ortho = false;
+        glutGUI::cavalier = false;
+        glutGUI::frustum = false;
+      break;
+      case '%':
+        glutGUI::perspective = false;
+        glutGUI::cabinet = false;
+        glutGUI::ortho = false;
+        glutGUI::cavalier = false;
+        glutGUI::frustum = true;
         break;
     case '>'://Carrega modelos
         if(!Generic_List_OBJ.empty()) Generic_List_OBJ.clear();
@@ -371,9 +421,24 @@ void teclado(unsigned char tecla, int x, int y) {
     case '<'://limpa tudo
         Generic_List_OBJ.clear();
         break;
+    case 'P':
+        pontual=!pontual;
+        break;
+    case '+':
+      k+=0.1;
+        break;
+    case '-':
+        k-=0.1;
+        break;
+    case '*':
+      drawShadow = !drawShadow;
+        break;
+      case 'W':
+        drawWallFlag = !drawWallFlag;
+        break;
     }
-    cout << "TAM:" << Generic_List_OBJ.size() << endl;
-    cout << "IT:" << it_Generic_List_OBJ << endl;
+    //cout << "TAM:" << Generic_List_OBJ.size() << endl;
+    //cout << "IT:" << it_Generic_List_OBJ << endl;
 }
 
 Generic* Add_Generic_List_OBJ(int obj_type){
@@ -389,7 +454,7 @@ Generic* Add_Generic_List_OBJ(int obj_type){
         add = new Giraffe();
         break;
     case HOUSE_3DS:
-        cout << "CASA 3DS DRAW" << endl;
+        //cout << "CASA 3DS DRAW" << endl;
         add = new House_3DS();
         break;
     case SKELETON:
@@ -423,7 +488,7 @@ void draw_list_OBJ(){
             //Não consegui sobrepor a cor, então fiz outra alternativa para destacar o objeto selecionado
             glScalef(Generic_List_OBJ[i]->get_x_scale()+0.2,Generic_List_OBJ[i]->get_y_scale()+0.2,Generic_List_OBJ[i]->get_z_scale()+0.2);
         }
-        if(draw_local_xyz) GUI::drawOrigin(0.3);
+        if(draw_local_xyz) GUI::drawOrigin(0.3);        
         Generic_List_OBJ[i]->draw();
         glPopMatrix();
     }
@@ -470,6 +535,11 @@ void cena_01(){
     Generic* house_3ds1 = new House_3DS(2.1,0.2,4.1,0,0,0,1.75,2.1,1.5);
 
     Generic_List_OBJ.push_back(house_3ds1);
+
+    Generic* mola1 = new Mola(15);
+
+    Generic_List_OBJ.push_back(mola1);
+
 
 }
 void setup_camera_1(){
@@ -531,7 +601,7 @@ void setup_camera_6(){
     glutGUI::cam->e.x = 30;
     glutGUI::cam->e.y = 1;
     glutGUI::cam->e.z = 0;
-    glutGUI::cam->c.x = 0;
+    glutGUI::cam->c.x = 0;    
     glutGUI::cam->c.y = 0;
     glutGUI::cam->c.z = 0;
     glutGUI::cam->u.x = 0;
@@ -559,4 +629,51 @@ void setup_camera_0(){
     glutGUI::cam->u.x = 0;
     glutGUI::cam->u.y = 1;
     glutGUI::cam->u.z = 0;
+}
+
+void shadow(){
+  glPushMatrix();
+  //definindo a luz que sera usada para gerar a sombra
+  float lightPos[4] = {-1+glutGUI::lx,5+glutGUI::ly,1+glutGUI::lz,pontual};
+  //GUI::setLight(0,lightPos[0],lightPos[1],lightPos[2],true,false,false,false,pontual);
+  //GUI::setLight(0,-1,2,1,true,false,false,false,pontual);
+  GLfloat sombraA[4][4];
+  //GUI::shadowMatrixYk(sombra,lightPos,k);
+  GLfloat planoA[4] = {0,1,0,-k};
+  GUI::shadowMatrix(sombraA,planoA,lightPos);
+  glMultTransposeMatrixf( (GLfloat*)sombraA );
+  glDisable(GL_LIGHTING);
+  glColor3d(0.0,0.0,0.0);
+  if(!Generic_List_OBJ.empty()){
+      draw_list_OBJ();
+      update_values_list_OBJ();
+  }
+  glEnable(GL_LIGHTING);
+  glPopMatrix();
+  glPushMatrix();
+  //definindo a luz que sera usada para gerar a sombra
+  //GUI::setLight(0,lightPos[0],lightPos[1],lightPos[2],true,false,false,false,pontual);
+  //GUI::setLight(0,-1,2,1,true,false,false,false,pontual);
+  glTranslatef(SIZE_FLOOR/2,0,0);
+  GLfloat sombraB[4][4];
+  //GUI::shadowMatrixYk(sombra,lightPos,k);
+  GLfloat planoB[4] = {-1,0,0,-k};
+  GUI::shadowMatrix(sombraB,planoB,lightPos);
+  glMultTransposeMatrixf( (GLfloat*)sombraB );
+  glDisable(GL_LIGHTING);
+  glColor3d(0.0,0.0,0.0);
+  if(!Generic_List_OBJ.empty()){
+      draw_list_OBJ();
+      update_values_list_OBJ();
+  }
+  glEnable(GL_LIGHTING);
+  glPopMatrix();
+}
+void drawWall(){
+  glPushMatrix();
+  glTranslatef(SIZE_FLOOR/2,0,0);
+  glTranslatef(0,SIZE_FLOOR/4,0);
+  glRotatef(90,0,0,1);
+  GUI::drawFloor(SIZE_FLOOR/2,SIZE_FLOOR);
+  glPopMatrix();
 }

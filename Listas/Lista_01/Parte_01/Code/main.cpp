@@ -1,5 +1,6 @@
 #include <iostream>
 #include <gui.h>
+#include <math.h>
 
 #define WIDTH 1366
 #define HIGH 768
@@ -24,26 +25,29 @@ void desenha() {
     GUI::drawFloor();
 
     glPushMatrix();
+    //Estado inicial
+    //Tobj'
+    glTranslatef(1,0,0);
+    glRotatef(-30,0,0,1);
+    glScalef(0.5,1,1);
 
-    glTranslatef(1,2,0);
-    glRotatef(45,0,0,1);
-    glRotatef(-90,0,1,0);
-    glScalef(1,1,2);
 
-    glScalef(1,1,0.5);
+    //Tobj' -1
+    glScalef(2,1,1);
+    glRotatef(30,0,0,1);
+    glTranslatef(-1,0,0);
+
+    //Tobj''
+    glTranslatef(2,sqrt(3),0);
+    glRotatef(90,0,0,1);
     glRotatef(90,0,1,0);
-    glRotatef(-45,0,0,1);
-    glTranslatef(-1,-2,0);
+    //glScalef(1,2,2);
 
-    glTranslatef(2,1,0);
-    glRotatef(90,0,1,0);
-    glRotatef(90,1,0,0);
-    glScalef(1,0.5,1);
-
-    //glScalef(1,2,1);
-    //glRotatef(-90,1,0,0);
+    //Tobj'' -1
+    //glScalef(1,0.5,0.5);
     //glRotatef(-90,0,1,0);
-    //glTranslatef(-2,-1,0);
+    //glRotatef(-90,0,0,1);
+    //glTranslatef(-2,-sqrt(3),0);
 
     glTranslatef(0,0.43,0);
     glScalef(20,20,20);

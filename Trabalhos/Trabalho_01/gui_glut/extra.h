@@ -32,6 +32,10 @@ public:
     static int height;// = 300;
 
     static bool perspective;// = true;
+    static bool ortho;
+    static bool cavalier;
+    static bool cabinet;
+    static bool frustum;
 
     static bool picking;// = false;
 
