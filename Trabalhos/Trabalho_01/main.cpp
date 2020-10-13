@@ -685,11 +685,11 @@ void shadow(){
       //GUI::setLight(0,lightPos[0],lightPos[1],lightPos[2],true,false,false,false,pontual);
       //GUI::setLight(0,-1,2,1,true,false,false,false,pontual);
       glTranslatef(-2+SIZE_FLOOR/2,0,0);
-      GLfloat sombraB[4][4];
+      GLfloat sombraC[4][4];
       //GUI::shadowMatrixYk(sombra,lightPos,k);
-      GLfloat planoB[4] = {-1/sqrt(2),1/sqrt(2),0,-k};
-      GUI::shadowMatrix(sombraB,planoB,lightPos);
-      glMultTransposeMatrixf( (GLfloat*)sombraB );
+      GLfloat planoC[4] = {-1/sqrt(2),1/sqrt(2),0,-k};
+      GUI::shadowMatrix(sombraC,planoC,lightPos);
+      glMultTransposeMatrixf( (GLfloat*)sombraC );
       glDisable(GL_LIGHTING);
       glColor3d(0.0,0.0,0.0);
       if(!Generic_List_OBJ.empty()){
@@ -713,6 +713,7 @@ void tiltedWall(){
   glPushMatrix();
   glTranslatef(SIZE_FLOOR/2,0,0);
   glTranslatef(0,SIZE_FLOOR/10,0);
+  glColor3f(10,10,10);
   glRotatef(45,0,0,1);
   GUI::drawFloor(SIZE_FLOOR/4,SIZE_FLOOR/2);
   glPopMatrix();

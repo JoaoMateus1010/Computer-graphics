@@ -99,7 +99,7 @@ void GUI::displayInit()
     const float ar = glutGUI::height>0 ? (float) glutGUI::width / (float) glutGUI::height : 1.0;
     const float w = glutGUI::width;
     const float h = glutGUI::height;
-    const float orthof = 0.003; //orthoFactor
+    const float orthof = 0.006; //orthoFactor
 
     glMatrixMode(GL_PROJECTION);
 
