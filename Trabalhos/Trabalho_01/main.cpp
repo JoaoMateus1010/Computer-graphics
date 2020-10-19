@@ -97,8 +97,17 @@ void shadow();
 void drawWall();
 void tiltedWall();
 
+//--------- Picking --------
+int defPick = 0;
+
 int picking( GLint cursorX, GLint cursorY, int w, int h );
 
+//------- Viewport ---------
+
+bool vp = false;
+
+void viewPorts();
+void cenario_def();
 
 Model3DS modelo3ds = Model3DS("../Trabalho_01/3ds/Cottage_FREE.3DS");
 Generic* tem = new Generic();
@@ -111,22 +120,9 @@ int main(){
 
 void desenha() {
     GUI::displayInit();
-    GUI::setLight(0,0,2,0, true, false);    
-    glPushMatrix();
-        glTranslated(0.0,k-0.001,0.0);
-        GUI::drawOrigin(0.5);
-        GUI::setColor(1,0,0);        
-        GUI::drawFloor(SIZE_FLOOR,SIZE_FLOOR);
-    glPopMatrix();
 
-    if(!Generic_List_OBJ.empty()){
-        draw_list_OBJ();
-        update_values_list_OBJ();
-    }
+    viewPorts();
 
-    if(drawShadow) shadow();
-    if(drawWallFlag) drawWall();
-    if(tiltedWallFlag) tiltedWall();
 
     glPushMatrix();
         glScalef(0,0,0);
@@ -141,7 +137,8 @@ void mouse(int button, int state, int x, int y){
         if(state==0){
             /*PICKING*/
             int pick = picking(x,y,5,5);
-            it_Generic_List_OBJ = (pick>0)?pick-1:0;
+            cout << "pick:" << pick<<endl;
+            it_Generic_List_OBJ = (pick!=0)?pick-1:it_Generic_List_OBJ;
             /*END*/
             if(EIXO_TRANSLATE_SELECTED==EIXO_X){
                 EIXO_TRANSLATE_SELECTED=EIXO_Y;
@@ -448,6 +445,9 @@ void teclado(unsigned char tecla, int x, int y) {
       case '/':
         tiltedWallFlag = !tiltedWallFlag;
         break;
+      case ';':
+        vp=!vp;
+        break;
     }
     //cout << "TAM:" << Generic_List_OBJ.size() << endl;
     //cout << "IT:" << it_Generic_List_OBJ << endl;
@@ -635,8 +635,8 @@ void setup_camera_7(){
 }
 void setup_camera_0(){
     glutGUI::cam->e.x = 0;
-    glutGUI::cam->e.y = 1;
-    glutGUI::cam->e.z = 10;
+    glutGUI::cam->e.y = 5;
+    glutGUI::cam->e.z = 15;
     glutGUI::cam->c.x = 0;
     glutGUI::cam->c.y = 1;
     glutGUI::cam->c.z = 0;
@@ -733,4 +733,48 @@ int picking( GLint cursorX, GLint cursorY, int w, int h ) {
     GUI::displayInit();
     draw_list_OBJ();
     return GUI::pickingClosestName(selectBuf,BUFSIZE);
+}
+void cenario_def(){
+  GUI::setLight(0,0,2,0, true, false);
+  glPushMatrix();
+      glTranslated(0.0,k-0.001,0.0);
+      GUI::drawOrigin(0.5);
+      GUI::setColor(1,0,0);
+      GUI::drawFloor(SIZE_FLOOR,SIZE_FLOOR);
+  glPopMatrix();
+  if(!Generic_List_OBJ.empty()){
+      draw_list_OBJ();
+      update_values_list_OBJ();
+  }
+  if(drawShadow) shadow();
+  if(drawWallFlag) drawWall();
+  if(tiltedWallFlag) tiltedWall();
+}
+void viewPorts() {
+    float width = glutGUI::width;
+    float height = glutGUI::height;
+        if(vp){
+            glViewport(0,2*height/3, width/4, height/3);
+            glLoadIdentity();
+            //glRotatef(glutGUI::cam->e.x,1,0,0);
+            gluLookAt(-glutGUI::cam->e.x,2,-glutGUI::cam->e.z, glutGUI::cam->c.x,glutGUI::cam->c.y,glutGUI::cam->c.z, glutGUI::cam->u.x,glutGUI::cam->u.y,glutGUI::cam->u.z);
+            cenario_def();
+
+            if(!Generic_List_OBJ.empty()){
+                glViewport(3*width/4, 2*height/3, width/4, height/3);
+                glLoadIdentity();
+                gluLookAt(Generic_List_OBJ[it_Generic_List_OBJ]->get_x_translate()+7,
+                          Generic_List_OBJ[it_Generic_List_OBJ]->get_y_translate()+12,
+                          Generic_List_OBJ[it_Generic_List_OBJ]->get_z_translate()+7,
+                          Generic_List_OBJ[it_Generic_List_OBJ]->get_x_translate(),
+                          Generic_List_OBJ[it_Generic_List_OBJ]->get_y_translate(),
+                          Generic_List_OBJ[it_Generic_List_OBJ]->get_z_translate(),
+                          0,1,0);
+                cenario_def();
+              }
+        }
+        glViewport(0, 0, width, height);
+            glLoadIdentity();
+            gluLookAt(glutGUI::cam->e.x,glutGUI::cam->e.y,glutGUI::cam->e.z, glutGUI::cam->c.x,glutGUI::cam->c.y,glutGUI::cam->c.z, glutGUI::cam->u.x,glutGUI::cam->u.y,glutGUI::cam->u.z);
+            cenario_def();
 }
