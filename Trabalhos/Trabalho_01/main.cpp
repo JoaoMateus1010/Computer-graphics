@@ -97,6 +97,9 @@ void shadow();
 void drawWall();
 void tiltedWall();
 
+int picking( GLint cursorX, GLint cursorY, int w, int h );
+
+
 Model3DS modelo3ds = Model3DS("../Trabalho_01/3ds/Cottage_FREE.3DS");
 Generic* tem = new Generic();
 
@@ -134,10 +137,12 @@ void desenha() {
 void mouse(int button, int state, int x, int y){
     GUI::mouseButtonInit(button,state,x,y);
     glutGUI::mouseMove(x,y);
-    //cout << "("<<glutGUI::last_x/(WIDTH/5)<<","<<glutGUI::last_y/(HIGH/5)<<")" << endl;
-    bool flag_time_double_click = false;    
-    if(button==0){
+    if(button==0){        
         if(state==0){
+            /*PICKING*/
+            int pick = picking(x,y,5,5);
+            it_Generic_List_OBJ = (pick>0)?pick-1:0;
+            /*END*/
             if(EIXO_TRANSLATE_SELECTED==EIXO_X){
                 EIXO_TRANSLATE_SELECTED=EIXO_Y;
             }else if(EIXO_TRANSLATE_SELECTED==EIXO_Y){
@@ -724,16 +729,8 @@ void tiltedWall(){
 int picking( GLint cursorX, GLint cursorY, int w, int h ) {
     int BUFSIZE = 512;
     GLuint selectBuf[512];
-
     GUI::pickingInit(cursorX,cursorY,w,h,selectBuf,BUFSIZE);
-
-//de acordo com a implementacao original da funcao display
-    //lembrar de nao inicializar a matriz de projecao, para nao ignorar a gluPickMatrix
     GUI::displayInit();
-    //só precisa desenhar o que for selecionavel
-    //desenhaPontosDeControle();
-//fim-de acordo com a implementacao original da funcao display
-
-    //retornando o name do objeto (ponto de controle) mais proximo da camera (z minimo! *[matrizes de normalizacao da projecao])
+    draw_list_OBJ();
     return GUI::pickingClosestName(selectBuf,BUFSIZE);
 }
