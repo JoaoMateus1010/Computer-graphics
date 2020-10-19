@@ -101,7 +101,7 @@ Model3DS modelo3ds = Model3DS("../Trabalho_01/3ds/Cottage_FREE.3DS");
 Generic* tem = new Generic();
 
 int main(){            
-    GUI gui =  GUI(WIDTH,HIGH,desenha,teclado);
+    GUI gui =  GUI(WIDTH,HIGH,desenha,teclado,mouse);
     //cout << "Programa em execução" << endl;
     return 0;
 }
@@ -135,7 +135,7 @@ void mouse(int button, int state, int x, int y){
     GUI::mouseButtonInit(button,state,x,y);
     glutGUI::mouseMove(x,y);
     //cout << "("<<glutGUI::last_x/(WIDTH/5)<<","<<glutGUI::last_y/(HIGH/5)<<")" << endl;
-    bool flag_time_double_click = false;
+    bool flag_time_double_click = false;    
     if(button==0){
         if(state==0){
             if(EIXO_TRANSLATE_SELECTED==EIXO_X){
@@ -496,7 +496,9 @@ void draw_list_OBJ(){
             glScalef(Generic_List_OBJ[i]->get_x_scale()+0.2,Generic_List_OBJ[i]->get_y_scale()+0.2,Generic_List_OBJ[i]->get_z_scale()+0.2);
         }
         if(draw_local_xyz) GUI::drawOrigin(0.3);        
-        Generic_List_OBJ[i]->draw();
+        glPushName(i+1);
+          Generic_List_OBJ[i]->draw();
+        glPopName();
         glPopMatrix();
     }
 }
@@ -717,4 +719,21 @@ void tiltedWall(){
   glRotatef(45,0,0,1);
   GUI::drawFloor(SIZE_FLOOR/4,SIZE_FLOOR/2);
   glPopMatrix();
+}
+
+int picking( GLint cursorX, GLint cursorY, int w, int h ) {
+    int BUFSIZE = 512;
+    GLuint selectBuf[512];
+
+    GUI::pickingInit(cursorX,cursorY,w,h,selectBuf,BUFSIZE);
+
+//de acordo com a implementacao original da funcao display
+    //lembrar de nao inicializar a matriz de projecao, para nao ignorar a gluPickMatrix
+    GUI::displayInit();
+    //só precisa desenhar o que for selecionavel
+    //desenhaPontosDeControle();
+//fim-de acordo com a implementacao original da funcao display
+
+    //retornando o name do objeto (ponto de controle) mais proximo da camera (z minimo! *[matrizes de normalizacao da projecao])
+    return GUI::pickingClosestName(selectBuf,BUFSIZE);
 }
