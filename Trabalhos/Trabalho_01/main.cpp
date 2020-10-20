@@ -98,7 +98,6 @@ void drawWall();
 void tiltedWall();
 
 //--------- Picking --------
-int defPick = 0;
 
 int picking( GLint cursorX, GLint cursorY, int w, int h );
 
@@ -734,6 +733,7 @@ int picking( GLint cursorX, GLint cursorY, int w, int h ) {
     draw_list_OBJ();
     return GUI::pickingClosestName(selectBuf,BUFSIZE);
 }
+
 void cenario_def(){
   GUI::setLight(0,0,2,0, true, false);
   glPushMatrix();
@@ -755,8 +755,7 @@ void viewPorts() {
     float height = glutGUI::height;
         if(vp){
             glViewport(0,2*height/3, width/4, height/3);
-            glLoadIdentity();
-            //glRotatef(glutGUI::cam->e.x,1,0,0);
+            glLoadIdentity();            
             gluLookAt(-glutGUI::cam->e.x,2,-glutGUI::cam->e.z, glutGUI::cam->c.x,glutGUI::cam->c.y,glutGUI::cam->c.z, glutGUI::cam->u.x,glutGUI::cam->u.y,glutGUI::cam->u.z);
             cenario_def();
 
